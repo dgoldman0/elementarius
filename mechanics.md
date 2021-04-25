@@ -42,7 +42,7 @@ This system will make it easier for people to get into the game if they aren't i
 
 ## Mana Generation
 
-If a slot contains mana, it will contain no less than 50 and no more than 1,000 mana. The distribution will be log normal with these cutoffs in mind. The probability of getting one of the basic mana types is 4/27, the probability of getting one of the secondary types is 2/27, and the probability of getting Spirit mana is 1/27.
+If a slot contains mana, it will contain no less than 50 and no more than 1,000 mana. The distribution will be log normal with these cutoffs in mind. The probability of getting one of the basic mana types is 5/27, the probability of getting one of the secondary types is 3/27, and the probability of getting Spirit mana is 1/27.
 
 ## Mana Stones
 
