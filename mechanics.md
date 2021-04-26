@@ -8,7 +8,9 @@ Mana stones can be combined to increase their effectiveness. Number of common st
 - Epic - 343
 - Legendary - 2401
 
-The same type of stone must be used. So for instance, fire stones of insight cannot be combined with fire stones of creation. Combining stones is different from crafting items and does not require a mana stone as a focus.
+The same type of stone must be used. So for instance, fire stones of insight cannot be combined with fire stones of creation. Combining stones is different from crafting items and does not require a mana stone as a focus. It does however require mana of the same type equal to the number of stones being used.
+
+Since a person may want to fuse stones together even though they don't have enough mana, each stone will have a unique identifier and how many common stones are fused to create it.
 
 # Crafting Items
 
