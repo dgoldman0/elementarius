@@ -26,7 +26,7 @@ A user may attempt to craft something of higher rarity than a mana stone allows.
 
 ## Mana Stones
 
-A common mana stone requires 100 mana of the desired stone type. A stone of creation is also needed. In addition, a stone of creation will require 25 Light and 25 Darkness mana, and a stone of life will require 50 Spirit mana.
+A common mana stone requires 100 mana of the desired stone type. A stone of creation is also needed. In addition to the base mana needed for insight, making a stone of creation will require 25 Light and 25 Darkness mana, and making a stone of life will require 50 Spirit mana.
 
 ## Light, Darkness, and Spirit Mana
 
