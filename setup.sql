@@ -1,14 +1,17 @@
-DROP DATABASE elementarius_game;
 CREATE DATABASE elementarius_game;
 USE elementarius_game;
 
-CREATE TABLE Users (id INT NOT NULL auto_increment, username VARCHAR(60) NOT NULL, xp INT UNSIGNED NOT NULL DEFAULT 0,
-  packs SMALLINT UNSIGNED NOT NULL DEFAULT 0, fire INT NOT NULL DEFAULT 0, air INT NOT NULL DEFAULT 0, water INT NOT NULL DEFAULT 0,
-  earth INT NOT NULL DEFAULT 0, light INT NOT NULL DEFAULT 0, darkness INT NOT NULL DEFAULT 0, spirit INT NOT NULL DEFAULT 0, PRIMARY KEY (id));
+-- Need to add salted & encrypted passwords for authentication. Might move the XP to a different table like battle_stats
+CREATE TABLE Users (id INT NOT NULL auto_increment, username VARCHAR(60) NOT NULL, packs SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+  fire INT NOT NULL DEFAULT 0, air INT NOT NULL DEFAULT 0, water INT NOT NULL DEFAULT 0, earth INT NOT NULL DEFAULT 0,
+  light INT NOT NULL DEFAULT 0, darkness INT NOT NULL DEFAULT 0, spirit INT NOT NULL DEFAULT 0, PRIMARY KEY (id));
+
+CREATE TABLE Battle_Stats (user_id INT NOT NULL, xp INT UNSIGNED NOT NULL DEFAULT 0, wins INT UNSIGNED NOT NULL DEFAULT 0, losses INT UNSIGNED NOT NULL DEFAULT 0, draws INT UNSIGNED NOT NULL DEFAULT 0, PRIMARY KEY (user_id));
 
 CREATE TABLE Stones (id INT UNSIGNED NOT NULL auto_increment, owner_id INT UNSIGNED NOT NULL, mana_type VARCHAR(10) NOT NULL, stone_type VARCHAR(10), energy INT UNSIGNED NOT NULL, PRIMARY KEY (id));
 
-INSERT INTO Users (username, packs) VALUES ('admin', 10);
+INSERT INTO Users (username, packs) VALUES ('admin', 1000);
+INSERT INTO Battle_Stats (user_id, xp) VALUES (1, 0);
 
 DELIMITER $$
 
@@ -130,28 +133,30 @@ BEGIN
 		SET results = "ERR: Not enough packs";
 	END IF;
 END;$$
-DELIMITER ;
 
-/*
-CREATE PROCEDURE fuse_stones(IN id_list VARCHAR(1000))
+-- Getting closer to working, and will add some output soon
+CREATE PROCEDURE fuse_stones(IN id_array VARCHAR(1000))
   READS SQL DATA SQL SECURITY INVOKER
   BEGIN
-    DECLARE id_list_local VARCHAR(1000);
+    DECLARE id_array_local VARCHAR(1000);
     DECLARE start_pos SMALLINT;
     DECLARE comma_pos SMALLINT;
     DECLARE current_id VARCHAR(1000);
     DECLARE end_loop TINYINT;
     DECLARE first_stone BOOL;
-    DECLARE mana_type TINYINT;
-    DECLARE s_type TINYINT;
-    DECLARE total_energy SMALLINT;
-    DECLARE error BOOL;
+    
+	DECLARE o_id INT UNSIGNED DEFAULT 0;
+    DECLARE m_type VARCHAR(10);
+    DECLARE s_type VARCHAR(10);
+
+    DECLARE total_energy SMALLINT UNSIGNED DEFAULT 0;
+    DECLARE error_trigger BOOL;
 
     SET id_array_local = id_array;
     SET start_pos = 1;
     SET comma_pos = locate(',', id_array_local);
     SET first_stone = TRUE;
-    SET error = FALSE;
+    SET error_trigger = FALSE;
 
     START TRANSACTION;
     REPEAT
@@ -163,26 +168,32 @@ CREATE PROCEDURE fuse_stones(IN id_list VARCHAR(1000))
              SET end_loop = 1;
          END IF;
 
-         -- If first stone, store mana type and stone type.
-         -- Then make sure the next stone in the list is of the same type.
-         -- Finally start adding stone energy together or throw error if not same type.
-         -- I need to figure out how to terminate the loop and throw a catch
-         SELECT mana_type AS mt, stone_type AS st, energy FROM Stones WHERE (id = current_id);
+         SELECT owner_id, mana_type, stone_type, energy INTO @oid, @mt, @st, @en FROM Stones WHERE (id = current_id) GROUP BY id LIMIT 1;
 
          IF first_stone THEN
-             SET first_stone = FALSE
-             SET mana_type = mt
-             SET stone_type = st
-         END IF
+             SET first_stone = FALSE;
+             SET o_id = @oid;
+             SET m_type = @mt;
+             SET s_type = @st;
+         END IF;
 
+		 IF @oid != o_id OR @mt != m_type OR @st != s_type THEN SET error_trigger = TRUE;
+         ELSE 
+			SET total_energy = total_energy + @en;
+            DELETE FROM Stones WHERE id = current_id;
+         END IF;
          IF end_loop = 0 THEN
              SET id_array_local = substring(id_array_local, comma_pos + 1);
              SET comma_pos = locate(',', id_array_local);
-         END IF
-    UNTIL end_loop = 1
+         END IF;
+    UNTIL end_loop = 1 OR error_trigger
 
     END REPEAT;
-    -- If all goes well, commit data
-    IF error = FALSE THEN COMMIT ELSE ROLLBACK;
+    -- If all goes well, add stone and commit data
+    IF error_trigger = FALSE THEN
+		INSERT INTO Stones (owner_id, mana_type, stone_type, energy) VALUES (owner_id, m_type, s_type, total_energy);
+		COMMIT;
+	ELSE ROLLBACK; END IF;
 END;$$
-*/
+
+DELIMITER ;
