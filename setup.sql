@@ -1,11 +1,14 @@
+DROP DATABASE elementarius_game;
 CREATE DATABASE elementarius_game;
 USE elementarius_game;
 
 CREATE TABLE Users (id INT NOT NULL auto_increment, username VARCHAR(60) NOT NULL, xp INT UNSIGNED NOT NULL DEFAULT 0,
   packs SMALLINT UNSIGNED NOT NULL DEFAULT 0, fire INT NOT NULL DEFAULT 0, air INT NOT NULL DEFAULT 0, water INT NOT NULL DEFAULT 0,
-  earth INT NOT NULL DEFAULT 0, light INT NOT NULL DEFAULT 0, darkness INT NOT NULL DEFAULT 0, spirit INT NOT NULL DEFAULT 0);
+  earth INT NOT NULL DEFAULT 0, light INT NOT NULL DEFAULT 0, darkness INT NOT NULL DEFAULT 0, spirit INT NOT NULL DEFAULT 0, PRIMARY KEY (id));
 
-CREATE TABLE Stones (id INT UNSIGNED NOT NULL auto_increment, owner_id INT UNSIGNED NOT NULL, mana_type VARCHAR(10) NOT NULL, stone_type VARCHAR(10), energy SMALLINT UNSIGNED NOT NULL);
+CREATE TABLE Stones (id INT UNSIGNED NOT NULL auto_increment, owner_id INT UNSIGNED NOT NULL, mana_type VARCHAR(10) NOT NULL, stone_type VARCHAR(10), energy INT UNSIGNED NOT NULL, PRIMARY KEY (id));
+
+INSERT INTO Users (username, packs) VALUES ('admin', 10);
 
 DELIMITER $$
 
@@ -23,108 +26,113 @@ BEGIN
     SET cnt = cnt + 1;
   END WHILE;
 
-  -- total will have a mean of 255n/2 and variance of 255n/12
   -- Normalize
-  SET result = ((total / 255 / iterations) - 0.5) * sqrt(12);
+  SET result = ((total / 255) - iterations/2) / sqrt(iterations/12);
   SELECT @result;
 END;$$
 
--- Generate a pack and distribute it to the user
+-- Generate a pack and distribute it to the user. Output results as string for log.
 
-CREATE PROCEDURE open_pack(user_id INT)
+CREATE PROCEDURE open_pack(user_id INT, OUT results VARCHAR(2500))
 READS SQL DATA SQL SECURITY INVOKER
 BEGIN
 
   DECLARE count TINYINT;
-  DECLARE m_type TINYINT;
+  DECLARE m_type VARCHAR (10);
 
-  DECLARE mana_rnd FLOAT;
-  DECLARE mana_amt SMALLINT;
-  DECLARE stone_type TINYINT;
-  DECLARE stone_energy TINYINT;
+  DECLARE mana_amt FLOAT;
+  DECLARE s_type VARCHAR(10);
+  DECLARE stone_energy INT UNSIGNED;
   DECLARE type_rnd FLOAT;
+  DECLARE rarity_rnd FLOAT;
 
   SET count = 0;
+  SET results = "";
 
-  -- I should make sure that a user by user_id actually exists!
+  -- Make sure user exists and there are enough packs.
+  SELECT (count(*) AND packs > 0) INTO @enough_packs FROM Users WHERE id = user_id GROUP BY id LIMIT 1;
 
-  REPEAT
+  IF @enough_packs = 1 THEN
+	  UPDATE Users SET packs = packs - 1 WHERE id = user_id; -- Remove a pack from the user's inventory
+	  REPEAT
 
-    SET mana_amt = 0;
-    CALL normal(16, @a);
-    
-	SELECT @a as mana_rnd;
-    
-    -- Make sure that the z-scores are correct for one tail!
-    IF mana_rnd < -0.8958 THEN
-      SET m_type = 'FIRE';
-    ELSEIF mana_rnd < -0.3309 THEN
-      SET m_type = 'AIR';
-    ELSEIF mana_rnd < 0.1397 THEN
-      SET m_type = 'WATER';
-    ELSEIF mana_rnd < 0.6456 THEN
-      SET m_type = 'EARTH';
-    ELSEIF mana_rnd < 1.0444 THEN
-      SET m_type = 'LIGHT';
-    ELSEIF mana_rnd < 1.7862 THEN
-      SET m_type = 'DARKNESS';
-    ELSE
-      SET m_type = 'SPIRIT';
-    END IF;
-    
-	CALL normal(16, @a);
-    SELECT @a as a;
-    IF a > -1.2816 THEN
-      -- Create mana
-      CALL normal(16, @m);
-      SELECT @m as m;
-      
-      SET mana_amt = EXP(m) * 100;
-      IF mana_amt < 50 THEN SET mana_amt = 50; ELSEIF mana_amt > 1000 THEN SET mana_amt = 1000; END IF;
+		SET mana_amt = 0;
+		CALL normal(16, @rnd);
+		
+		-- Make sure that the z-scores are correct for one tail!
+		IF @rnd < -0.8958 THEN
+		  SET m_type = 'FIRE';
+		ELSEIF @rnd < -0.3309 THEN
+		  SET m_type = 'AIR';
+		ELSEIF @rnd < 0.1397 THEN
+		  SET m_type = 'WATER';
+		ELSEIF @rnd < 0.6456 THEN
+		  SET m_type = 'EARTH';
+		ELSEIF @rnd < 1.0444 THEN
+		  SET m_type = 'LIGHT';
+		ELSEIF @rnd < 1.7862 THEN
+		  SET m_type = 'DARKNESS';
+		ELSE
+		  SET m_type = 'SPIRIT';
+		END IF;
+			
+		SELECT m_type;
+		
+		CALL normal(16, @a);
+		IF @a > -1.2816 THEN
+		  -- Create mana
+		  CALL normal(16, @m);
+		  
+		  SET mana_amt = EXP(@m) * 100;
+		  IF mana_amt < 50 THEN SET mana_amt = 50; ELSEIF mana_amt > 1000 THEN SET mana_amt = 1000; END IF;
 
-      -- Update user's quantity of mana
-      IF @mana_type = 'FIRE' THEN UPDATE Users SET fire = fire + mana_amt;
-      ELSEIF m_type = 'AIR' THEN UPDATE Users SET fire = air + mana_amt;
-      ELSEIF m_type = 'WATER' THEN UPDATE Users SET water = water + mana_amt;
-      ELSEIF m_type = 'EARTH' THEN UPDATE Users SET earth = earth + mana_amt;
-      ELSEIF m_type = 'LIGHT' THEN UPDATE Users SET light = light + mana_amt;
-      ELSEIF m_type = 'DARKNESS' THEN UPDATE Users SET darkness = darkness + mana_amt;
-      ELSEIF m_type = 'SPIRIT' THEN UPDATE Users SET spirit = spirit + mana_amt;
-      END IF;
-    ELSE
-      -- Create a mana stone!
+		  -- Update user's quantity of mana
+		  IF m_type = 'FIRE' THEN UPDATE Users SET fire = fire + FLOOR(mana_amt) WHERE id = user_id;
+		  ELSEIF m_type = 'AIR' THEN UPDATE Users SET fire = air + FLOOR(mana_amt) WHERE id = user_id;
+		  ELSEIF m_type = 'WATER' THEN UPDATE Users SET water = water + FLOOR(mana_amt) WHERE id = user_id;
+		  ELSEIF m_type = 'EARTH' THEN UPDATE Users SET earth = earth + FLOOR(mana_amt) WHERE id = user_id;
+		  ELSEIF m_type = 'LIGHT' THEN UPDATE Users SET light = light + FLOOR(mana_amt) WHERE id = user_id;
+		  ELSEIF m_type = 'DARKNESS' THEN UPDATE Users SET darkness = darkness + FLOOR(mana_amt) WHERE id = user_id;
+		  ELSEIF m_type = 'SPIRIT' THEN UPDATE Users SET spirit = spirit + FLOOR(mana_amt) WHERE id = user_id;
+		  END IF;
+		  
+		  SET results = concat(concat(results, "MANA: ", m_type), concat(", ", CAST(mana_amt AS char(50))));
+		ELSE
+		  -- Create a mana stone!
 
-      -- Determine what kind of stone should be created
-      CALL normal(16, @a);
-      SELECT @a as a;
-      SET type_rnd = a;
+		  -- Determine what kind of stone should be created
+		  CALL normal(16, @stype);
 
-      IF type_rnd < -1.6449 THEN SET stone_type = 'INSIGHT';
-      ELSEIF type_rnd < -0.6745 THEN SET stone_type = 'CREATION';
-      ELSE SET stone_type = 'LIFE';
-      END IF
+		  IF @stype < -1.6449 THEN SET s_type = 'LIFE';
+		  ELSEIF @stype < -0.6745 THEN SET s_type = 'CREATION';
+		  ELSE SET s_type = 'INSIGHT';
+		  END IF;
 
-      -- Determine what rarity stone should be created
-      DECLARE rarity_rnd FLOAT;
-      SET rarity_rnd = CALL normal(16);
+		  -- Determine what rarity stone should be created
+		  CALL normal(32, @rnd);
 
-      IF rarity_rnd < -3.384196 THEN stone_energy = 100;
-      ELSEIF stone_rnd < -2.764 THEN stone_energy = 700;
-      ELSEIF stone_rnd < -2.047 THEN stone_energy = 4900;
-      ELSEIF stone_rnd < -1.068 THEN stone_energy = 34300;
-      ELSE stone_energy = 240100;
-      END IF
+		  IF @rnd < -3.384196 THEN SET stone_energy = 240100;
+		  ELSEIF @rnd < -2.764 THEN SET stone_energy = 34300;
+		  ELSEIF @rnd < -2.047 THEN SET stone_energy = 4900;
+		  ELSEIF @rnd < -1.068 THEN SET stone_energy = 700;
+		  ELSE SET stone_energy = 100;
+		  END IF;
 
-      -- Add new mana stone of the created type to the inventory
-      INSERT INTO Stones (owner_id, mana_type, stone_type, energy) VALUES (user_id, m_type, @stone_type, stone_energy);
-
-    END IF;
-    
-    SET count = count + 1;
-  UNTIL count = 4 END REPEAT;
--- I want this statement to return a list of the results as well so that it can be presented to the user.
+		  -- Add new mana stone of the created type to the inventory
+		  INSERT INTO Stones (owner_id, mana_type, stone_type, energy) VALUES (user_id, m_type, s_type, stone_energy);
+		  SET results = concat(concat(concat(results, "STONE: "), concat(m_type, ", ")), concat(concat(s_type,", "), CAST(stone_energy as CHAR(50))));
+		END IF;
+		
+		SET count = count + 1;
+		If count < 5 THEN SET results = CONCAT(results, "; "); END IF;
+	  UNTIL count = 5 END REPEAT;
+	ELSE 
+		SET results = "ERR: Not enough packs";
+	END IF;
 END;$$
+DELIMITER ;
 
+/*
 CREATE PROCEDURE fuse_stones(IN id_list VARCHAR(1000))
   READS SQL DATA SQL SECURITY INVOKER
   BEGIN
@@ -135,7 +143,7 @@ CREATE PROCEDURE fuse_stones(IN id_list VARCHAR(1000))
     DECLARE end_loop TINYINT;
     DECLARE first_stone BOOL;
     DECLARE mana_type TINYINT;
-    DECLARE stone_type TINYINT;
+    DECLARE s_type TINYINT;
     DECLARE total_energy SMALLINT;
     DECLARE error BOOL;
 
@@ -177,4 +185,4 @@ CREATE PROCEDURE fuse_stones(IN id_list VARCHAR(1000))
     -- If all goes well, commit data
     IF error = FALSE THEN COMMIT ELSE ROLLBACK;
 END;$$
-DELIMITER;
+*/

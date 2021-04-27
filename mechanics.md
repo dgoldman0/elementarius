@@ -49,3 +49,7 @@ If a slot contains mana, it will contain no less than 50 and no more than 1,000 
 ## Mana Stones
 
 There is a 10% chance that instead of mana, users will receive a mana stone. The same probabilities for which type of mana a person gets is the same as with regular mana generation. The probability of a common stone will be roughly 85.7%, and each higher rarity will have 1/7th the probability of the previous rarity. Finally, there will be a 75% chance of getting a stone of insight, a 20% chance of getting a stone of creation, and only a 5% chance of getting a stone of life.
+
+# Creatures
+
+Not much is considered with creatures and how they'll battle. There will be rarities of creature which can only be forged by the appropriate life stone. Creatures will have mana based stats, resistances, weaknesses, etc.
