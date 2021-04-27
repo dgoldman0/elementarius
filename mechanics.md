@@ -53,3 +53,11 @@ There is a 10% chance that instead of mana, users will receive a mana stone. The
 # Creatures
 
 Not much is considered with creatures and how they'll battle. There will be rarities of creature which can only be forged by the appropriate life stone. Creatures will have mana based stats, resistances, weaknesses, etc.
+
+## Breeding
+
+Not every angel wants to create life from scratch. Some are happy to selectively breed existing creatures. The offspring of two creatures will have stats related to both parents. Direct relatives cannot breed. Additionally, breeding does take some mana.
+
+# Training & Specialization
+
+As users decide how to play the game, their decisions will impact their skill sets. Over time, users who become specialized in a given skill set, such as puzzle solving or breeding, will gain stats bonuses to show their hard work. 
