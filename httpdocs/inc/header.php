@@ -54,8 +54,7 @@
                   <li class="nav-item"><a class="nav-link" href="https://github.com/#" target="_blank"><i class="fab fa-github text-white"></i> GitHub</a></li>
                   <li class="nav-item"><a class="nav-link" href="#" target="_blank"><i class="fas fa-search-dollar text-white"></i> Contract</a></li>-->
               </ul>
-              <div class="container">
-                <h2>Badges on Buttons</h2>
+              <div class="navbar-nav mr-auto">
                 <button type="button" class="btn btn-primary">Primary <span class="badge">7</span></button>
                 <button type="button" class="btn btn-success">Success <span class="badge">3</span></button>
                 <button type="button" class="btn btn-danger">Danger <span class="badge">5</span></button>
