@@ -14,29 +14,19 @@
                         <hr/>
                         <div class = "row">
                           <div class="col-xs-5 col-md-2">
-                              <a href="#" class="img-rounded">
-                                <img src = "assets/img/elements.jpg"/ width = "200px"/>
-                              </a>
+                            <img src = "assets/img/elements.jpg"/ width = "200px" class = "img-rounded"/>
                           </div>
                           <div class="col-xs-5 col-md-2">
-                            <a href="#" class="img-rounded">
-                              <img src = "assets/img/elements.jpg"/ width = "200px"/>
-                            </a>
+                            <img src = "assets/img/elements.jpg"/ width = "200px" class = "img-rounded"/>
                           </div>
                           <div class="col-xs-5 col-md-2">
-                            <a href="#" class="img-rounded">
-                              <img src = "assets/img/elements.jpg"/ width = "200px"/>
-                            </a>
+                            <img src = "assets/img/elements.jpg"/ width = "200px" class = "img-rounded"/>
                           </div>
                           <div class="col-xs-5 col-md-2">
-                            <a href="#" class="img-rounded">
-                              <img src = "assets/img/elements.jpg"/ width = "200px"/>
-                            </a>
+                            <img src = "assets/img/elements.jpg"/ width = "200px" class = "img-rounded"/>
                           </div>
                           <div class="col-xs-5 col-md-2">
-                            <a href="#" class="img-rounded">
-                              <img src = "assets/img/elements.jpg"/ width = "200px"/>
-                            </a>
+                            <img src = "assets/img/elements.jpg"/ width = "200px" class = "img-rounded"/>
                           </div>
                     </div>
                 </div>
