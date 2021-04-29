@@ -63,18 +63,18 @@
                 <button type="button" class="btn btn-danger">Darkness <span class="badge">5</span></button>
                 <button type="button" class="btn btn-danger">Spirit <span class="badge">5</span></button>
               </div>
-                <ul class="navbar-nav mr-auto">
-                  <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" id="dropdown08" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-toolbox text-white"></i> [Username]</a>
-                      <div class="dropdown-menu bg-primary" aria-labelledby="dropdown08">
-                        <a class="dropdown-item text-white" href="/bot.php"><i class="fas fa-toolbox text-white"></i> Twitch Bot</a><
-                        <a class="dropdown-item text-white" href="/resources.php"><i class="fas fa-toolbox text-white"></i> Creator Resources</a><
-                        <hr/>
-                        <a class="dropdown-item text-white" href="https://arcadium.fun"> Arcadium</a>
-                        <a class="dropdown-item text-white" href="https://nolex.org/main/ARCTRX.html?ref=5f27039c6766fa6f943137be"> ARC on NoleX</a>
-                      </div>
-                  </li>
-              </ul>
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown08" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-toolbox text-white"></i> [Username]</a>
+                    <div class="dropdown-menu bg-primary" aria-labelledby="dropdown08">
+                      <a class="dropdown-item text-white" href="/bot.php"><i class="fas fa-toolbox text-white"></i> Twitch Bot</a><
+                      <a class="dropdown-item text-white" href="/resources.php"><i class="fas fa-toolbox text-white"></i> Creator Resources</a><
+                      <hr/>
+                      <a class="dropdown-item text-white" href="https://arcadium.fun"> Arcadium</a>
+                      <a class="dropdown-item text-white" href="https://nolex.org/main/ARCTRX.html?ref=5f27039c6766fa6f943137be"> ARC on NoleX</a>
+                    </div>
+                </li>
+            </ul>
           </div>
       </nav>
     </header>
