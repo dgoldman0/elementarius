@@ -18,7 +18,7 @@ A stone of creation is needed to craft items, as a focus for the mana. A common 
 
 ## Shattering
 
-A stone has a 10% chance of shattering when crafting an item of equal rarity. But if the stone is used to craft something of lower rarity, that risk is cut in half for each level of rarity. An epic stone can therefore craft an uncommon item with only a 2.5% chance of shattering.
+A stone has a 10% chance of shattering when crafting an item of equal rarity. But if the stone is used to craft something of lower rarity, that risk is cut in half for each level of rarity. An epic stone can therefore craft an uncommon item with only a 2.5% chance of shattering. Creature crafting works slightly differently, since the stone simply creates attributes for the creature. In this case, a common stone has a 10% chance of shattering, and each higher rarity has half the probability of the prior.
 
 ### Upcrafting
 
@@ -52,12 +52,22 @@ There is a 10% chance that instead of mana, users will receive a mana stone. The
 
 # Creatures
 
-Not much is considered with creatures and how they'll battle. There will be rarities of creature which can only be forged by the appropriate life stone. Creatures will have mana based stats, resistances, weaknesses, etc.
+Not much is considered with creatures and how they'll battle. There will be rarities of creature which can only be created by the appropriate life stone. Creatures will have mana based stats, speed, health, mana reserve, and other stats. They will also have stats that persist outside of battle.
+
+## Battling
+
+One on one battles will be the primary mode of battling. The battles are active, meaning that a user has to decide what actions to take for each turn. A player can decide from a number of actions, including attack actions and defense actions. A player can also try to run away from the battle. 
 
 ## Breeding
 
 Not every angel wants to create life from scratch. Some are happy to selectively breed existing creatures. The offspring of two creatures will have stats related to both parents. Direct relatives cannot breed. Additionally, breeding does take some mana.
 
+## Death
+
+A creature can die. If it gets too old, or has been through too many battles without proper healing, the creature will die. However, death can be prevented by using various elixirs.
+
 # Training & Specialization
 
-As users decide how to play the game, their decisions will impact their skill sets. Over time, users who become specialized in a given skill set, such as puzzle solving or breeding, will gain stats bonuses to show their hard work. 
+As users decide how to play the game, their decisions will impact their skill sets. Over time, users who become specialized in a given skill set, such as puzzle solving or breeding, will gain stats bonuses to show their hard work.
+
+Options are puzzle solver, item crafter, life bringer, breeder, and trainer. The level of specialization will be represented as crests tied to a user's account.
