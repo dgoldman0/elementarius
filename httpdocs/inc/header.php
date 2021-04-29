@@ -45,13 +45,13 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="navbar-nav mr-auto">
-              <button type="button" class="btn btn-danger">Fire <span class="badge">7</span></button>
-              <button type="button" class="btn btn-info">Air <span class="badge">3</span></button>
-              <button type="button" class="btn btn-primary">Water <span class="badge">5</span></button>
-              <button type="button" class="btn btn-success">Earth <span class="badge">5</span></button>
-              <button type="button" class="btn btn-light">Light <span class="badge">5</span></button>
-              <button type="button" class="btn btn-dark">Darkness <span class="badge">5</span></button>
-              <button type="button" class="btn btn-warning">Spirit <span class="badge">5</span></button>
+              <button type="button" class="btn btn-danger">Fire <span id = "mana-fire" class="badge">#</span></button>
+              <button type="button" class="btn btn-info">Air <span id = "mana-air" class="badge">#</span></button>
+              <button type="button" class="btn btn-primary">Water <span id = "mana-water" class="badge">#</span></button>
+              <button type="button" class="btn btn-success">Earth <span id = "mana-earth" class="badge">#</span></button>
+              <button type="button" class="btn btn-light">Light <span id = "mana-light" class="badge">#</span></button>
+              <button type="button" class="btn btn-dark">Darkness <span id = "mana-darkness" class="badge">#</span></button>
+              <button type="button" class="btn btn-warning">Spirit <span id = "mana-spirit" class="badge">#</span></button>
             </div>
             <div class="collapse navbar-collapse" id="navbarColor02">
               <ul class="navbar-nav ml-auto">
@@ -66,11 +66,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown08" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-toolbox text-white"></i> [Username]</a>
                     <div class="dropdown-menu bg-primary" aria-labelledby="dropdown08">
-                      <a class="dropdown-item text-white" href="/bot.php"><i class="fas fa-toolbox text-white"></i> Twitch Bot</a><
-                      <a class="dropdown-item text-white" href="/resources.php"><i class="fas fa-toolbox text-white"></i> Creator Resources</a><
-                      <hr/>
-                      <a class="dropdown-item text-white" href="https://arcadium.fun"> Arcadium</a>
-                      <a class="dropdown-item text-white" href="https://nolex.org/main/ARCTRX.html?ref=5f27039c6766fa6f943137be"> ARC on NoleX</a>
+                      <a class="dropdown-item text-white" href="/packs.php"><i class="fas fa-toolbox text-white"></i> Open Packs</a><
                     </div>
                 </li>
               </ul>
