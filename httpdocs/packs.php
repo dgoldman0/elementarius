@@ -1,4 +1,5 @@
-    <?php require_once('/inc/control.php');
+    <?php
+    require_once('/inc/control.php');
     require_once('/inc/header.php'); ?>
     <!-- SPACING OF 5 BR'S NECESSARY FOR TOP OF CONTENT TO SHOW WITH STICKY NAVBAR. -->
     <br /><br /><br /><br /><br />
