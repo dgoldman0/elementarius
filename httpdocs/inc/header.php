@@ -44,7 +44,15 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
+            <div class="navbar-nav mr-auto">
+              <button type="button" class="btn btn-danger">Fire <span class="badge">7</span></button>
+              <button type="button" class="btn btn-info">Air <span class="badge">3</span></button>
+              <button type="button" class="btn btn-primary">Water <span class="badge">5</span></button>
+              <button type="button" class="btn btn-success">Earth <span class="badge">5</span></button>
+              <button type="button" class="btn btn-light">Light <span class="badge">5</span></button>
+              <button type="button" class="btn btn-dark">Darkness <span class="badge">5</span></button>
+              <button type="button" class="btn btn-warning">Spirit <span class="badge">5</span></button>
+            </div>
             <div class="collapse navbar-collapse" id="navbarColor02">
               <ul class="navbar-nav ml-auto">
                   <li class="nav-item"><a class="nav-link" href="https://twitter.com/arcadium0"><i class="fab fa-twitter text-white"></i> Twitter</a></li>
@@ -54,15 +62,6 @@
                   <li class="nav-item"><a class="nav-link" href="https://github.com/#" target="_blank"><i class="fab fa-github text-white"></i> GitHub</a></li>
                   <li class="nav-item"><a class="nav-link" href="#" target="_blank"><i class="fas fa-search-dollar text-white"></i> Contract</a></li>-->
               </ul>
-              <div class="navbar-nav mr-auto">
-                <button type="button" class="btn btn-primary">Fire <span class="badge">7</span></button>
-                <button type="button" class="btn btn-success">Air <span class="badge">3</span></button>
-                <button type="button" class="btn btn-danger">Water <span class="badge">5</span></button>
-                <button type="button" class="btn btn-danger">Earth <span class="badge">5</span></button>
-                <button type="button" class="btn btn-danger">Light <span class="badge">5</span></button>
-                <button type="button" class="btn btn-danger">Darkness <span class="badge">5</span></button>
-                <button type="button" class="btn btn-danger">Spirit <span class="badge">5</span></button>
-              </div>
               <ul class="navbar-nav mr-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown08" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-toolbox text-white"></i> [Username]</a>
@@ -74,7 +73,7 @@
                       <a class="dropdown-item text-white" href="https://nolex.org/main/ARCTRX.html?ref=5f27039c6766fa6f943137be"> ARC on NoleX</a>
                     </div>
                 </li>
-            </ul>
+              </ul>
           </div>
       </nav>
     </header>
