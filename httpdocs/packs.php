@@ -14,19 +14,29 @@
                         <hr/>
                         <div class = "row">
                           <div class="col-xs-5 col-md-2">
-                              <a href="#" class="thumbnail"/>
+                              <a href="#" class="thumbnail">
+                                <img src = "assets/img/elements.jpg"
+                              </a>
                           </div>
                           <div class="col-xs-5 col-md-2">
-                              <a href="#" class="thumbnail"/>
+                            <a href="#" class="thumbnail">
+                              <img src = "assets/img/elements.jpg"
+                            </a>
                           </div>
                           <div class="col-xs-5 col-md-2">
-                              <a href="#" class="thumbnail"/>
+                            <a href="#" class="thumbnail">
+                              <img src = "assets/img/elements.jpg"
+                            </a>
                           </div>
                           <div class="col-xs-5 col-md-2">
-                              <a href="#" class="thumbnail"/>
+                            <a href="#" class="thumbnail">
+                              <img src = "assets/img/elements.jpg"
+                            </a>
                           </div>
                           <div class="col-xs-5 col-md-2">
-                              <a href="#" class="thumbnail"/>
+                            <a href="#" class="thumbnail">
+                              <img src = "assets/img/elements.jpg"
+                            </a>
                           </div>
                     </div>
                 </div>
