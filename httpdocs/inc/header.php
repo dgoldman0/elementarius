@@ -61,6 +61,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown08" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-toolbox text-white"></i> [Username]</a>
                     <div class="dropdown-menu bg-primary" aria-labelledby="dropdown08">
+                      <a class="dropdown-item text-white" href="/profile.php"><i class="fas fa-toolbox text-white"></i> Profile</a><
                       <a class="dropdown-item text-white" href="/packs.php"><i class="fas fa-toolbox text-white"></i> Open Packs</a><
                     </div>
                 </li>

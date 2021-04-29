@@ -1,5 +1,5 @@
     <?php
-    require_once 'inc/control.php';
+    #require_once 'inc/control.php';
     require_once 'inc/header.php'; ?>
     <!-- SPACING OF 5 BR'S NECESSARY FOR TOP OF CONTENT TO SHOW WITH STICKY NAVBAR. -->
     <br /><br /><br /><br /><br />
@@ -11,6 +11,23 @@
                 <div class="row">
                     <div class="col text-left">
                         <h1 class="text-white">Open Mana Packs</h1>
+                        <hr/>
+                        <div class = "row">
+                          <div class="col-xs-5 col-md-2">
+                              <a href="#" class="thumbnail"/>
+                          </div>
+                          <div class="col-xs-5 col-md-2">
+                              <a href="#" class="thumbnail"/>
+                          </div>
+                          <div class="col-xs-5 col-md-2">
+                              <a href="#" class="thumbnail"/>
+                          </div>
+                          <div class="col-xs-5 col-md-2">
+                              <a href="#" class="thumbnail"/>
+                          </div>
+                          <div class="col-xs-5 col-md-2">
+                              <a href="#" class="thumbnail"/>
+                          </div>
                     </div>
                 </div>
             </div>
