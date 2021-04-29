@@ -1,0 +1,48 @@
+/* General */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.wallpaper {
+    background: rgb(33,33,33);
+}
+
+/* Rounded Corner FX */
+/* 0,0,0,0 - top left, top right, bottom right, bottom left */
+.rcTopLeft      {border-radius: 10px  0px  0px  0px;}
+.rcTopRight     {border-radius:  0px 10px  0px  0px;}
+.rcBottomLeft   {border-radius:  0px  0px  0px 10px;}
+.rcBottomRight  {border-radius: 10px  0px 10px  0px;}
+
+.rcTop          {border-radius: 10px 10px  0px  0px;}
+.rcBottom       {border-radius:  0px  0px 10px 10px;}
+
+.rcLeft         {border-radius: 10px  0px  0px 10px;}
+.rcRight        {border-radius:  0px 10px 10px  0px;}
+
+.rcAll          {border-radius: 10px 10px 10px 10px;}
+.rcNone         {border-radius:  0px  0px  0px  0px;}
+
+/* Glass FX */
+.glassPanel {
+    background-color: rgba(0,0,0,0.65);
+}
+
+.glassButton {
+    background-color: rgba(0,0,0,0);
+    transition: background-color 0.25s;
+}
+
+.glassButton:hover {
+    background-color: rgba(95, 95, 95, 0.65);
+    color: #000;
+}
+
+.gameArea {
+  height: 300px;
+  background-color: white;
+  border-width: 2px;
+  border-style: groove;
+  overflow-y: scroll;
+}
