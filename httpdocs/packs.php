@@ -14,19 +14,19 @@
                         <hr/>
                         <div class = "d-flex justify-content-evenly">
                           <div class="col-xs-5">
-                            <img src = "assets/img/elements.jpg"/ width = "200px" class = "img-rounded"/>
+                            <img src = "assets/img/elements.jpg"/ width = "200px" class = "border rounded"/>
                           </div>
                           <div class="col-xs-5">
-                            <img src = "assets/img/elements.jpg"/ width = "200px" class = "img-rounded"/>
+                            <img src = "assets/img/elements.jpg"/ width = "200px" class = "border rounded"/>
                           </div>
                           <div class="col-xs-5">
-                            <img src = "assets/img/elements.jpg"/ width = "200px" class = "img-rounded"/>
+                            <img src = "assets/img/elements.jpg"/ width = "200px" class = "border rounded"/>
                           </div>
                           <div class="col-xs-5">
-                            <img src = "assets/img/elements.jpg"/ width = "200px" class = "img-rounded"/>
+                            <img src = "assets/img/elements.jpg"/ width = "200px" class = "border rounded"/>
                           </div>
                           <div class="col-xs-5">
-                            <img src = "assets/img/elements.jpg"/ width = "200px" class = "img-rounded"/>
+                            <img src = "assets/img/elements.jpg"/ width = "200px" class = "border rounded"/>
                           </div>
                     </div>
                 </div>
