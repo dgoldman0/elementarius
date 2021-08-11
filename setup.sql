@@ -1,10 +1,10 @@
 /* Initialization Script
-** 
+**
 ** Handles the creation of tables and stored procedures.
-** Much of the mechanics for this game, including pack generation and creature creation occurs using stored procedures rather than external code.
+** Much of the mechanics for this game, including pack generation and champion creation occurs using stored procedures rather than external code.
 */
 -- z-scores are almost certainly not right. I just did area z < z' = p, without taking into account that the area includes the area of the previous probability.
--- It's an easy fix. I just need to recalculate the z-scores properly. 
+-- It's an easy fix. I just need to recalculate the z-scores properly.
 
 DROP DATABASE elementarius_game; -- This line is just to delete old versions while working on the coding. It'll be gone in the final initialization script.
 CREATE DATABASE elementarius_game;
@@ -21,7 +21,7 @@ CREATE TABLE Battle_Stats (user_id INT NOT NULL, xp INT UNSIGNED NOT NULL DEFAUL
 CREATE TABLE Stones (id INT UNSIGNED NOT NULL auto_increment, owner_id INT UNSIGNED NOT NULL, mana_type VARCHAR(10) NOT NULL, stone_type VARCHAR(10), energy INT UNSIGNED NOT NULL, PRIMARY KEY (id));
 
 -- Debating whether or not to add an actual indicator of rarity based on the stone rarity used to create the creature. Rarity could provide other benefits or just create a shiny version.
-CREATE TABLE Creatures (id INT UNSIGNED NOT NULL auto_increment, owner_id INT UNSIGNED NOT NULL, energy INT UNSIGNED NOT NULL,
+CREATE TABLE Champions (id INT UNSIGNED NOT NULL auto_increment, owner_id INT UNSIGNED NOT NULL, energy INT UNSIGNED NOT NULL,
   fire SMALLINT NOT NULL, air SMALLINT NOT NULL, water SMALLINT NOT NULL, earth SMALLINT NOT NULL, light SMALLINT NOT NULL, darkness SMALLINT NOT NULL, spirit SMALLINT NOT NULL,
   speed SMALLINT NOT NULL, strength SMALLINT NOT NULL, dexterity SMALLINT NOT NULL, charisma SMALLINT NOT NULL,
   max_health SMALLINT UNSIGNED NOT NULL, age SMALLINT UNSIGNED NOT NULL DEFAULT 0, health SMALLINT UNSIGNED NOT NULL,
@@ -217,13 +217,13 @@ CREATE PROCEDURE fuse_stones(IN id_array VARCHAR(1000))
 	ELSE ROLLBACK; END IF;
 END;$$
 
-/* Create a creature using mana stones and mana
+/* Create a champion using mana stones and mana
 **
-** Uses a combination of a mana stone and mana to craft creatures. The more mana used, the better the stats. The better the mana stone used, the better the stats as well.
+** Uses a combination of a mana stone and mana to craft champions. The more mana used, the better the stats. The better the mana stone used, the better the stats as well.
 **
 ** I still need to create an output variable to return results
 */
-CREATE PROCEDURE create_creature(IN o_id INT UNSIGNED, IN s_id INT UNSIGNED,
+CREATE PROCEDURE create_champion(IN o_id INT UNSIGNED, IN s_id INT UNSIGNED,
   m_fire INT UNSIGNED, m_air INT UNSIGNED, m_water INT UNSIGNED, m_earth INT UNSIGNED,
   m_light INT UNSIGNED, m_darkness INT UNSIGNED, m_spirit INT UNSIGNED)
 
@@ -245,14 +245,14 @@ BEGIN
 
   SELECT mana_type, stone_type, energy INTO @mt, @st, @en FROM Stones WHERE id = s_id AND owner_id = o_id GROUP BY id LIMIT 1;
 
-  -- Check to make sure there are enough resources. 
-  SELECT fire >= m_fire AND air >= m_air AND water >= m_water AND earth >= m_earth AND light >= m_light AND darkness >= m_darkness AND spirit >= M_darkness INTO @enough FROM Users WHERE id = u_id GROUP BY id LIMIT 1; 
+  -- Check to make sure there are enough resources.
+  SELECT fire >= m_fire AND air >= m_air AND water >= m_water AND earth >= m_earth AND light >= m_light AND darkness >= m_darkness AND spirit >= M_darkness INTO @enough FROM Users WHERE id = u_id GROUP BY id LIMIT 1;
   IF @enough AND @st = 'LIFE' THEN
 
 	-- Delete mana from user's mana pool
     UPDATE Users SET fire = fire - m_fire, air = air - m_air, water = water - m_water, earth = earth - m_earth,  light = light - m_light, darkness = darkness - m_darkness, spirit = spirit - m_spiirt WHERE id = u_id;
 
-    -- Calculate how much power the creature has for each element
+    -- Calculate how much power the champion has for each element
     CALL normal(16, @rnd);
     SET boost = LOG(@en) * EXP(@rnd);
     SET p_fire = FLOOR(-50 + boost * LOG(m_fire + 1));
@@ -304,17 +304,17 @@ BEGIN
     CALL normal(16, @rnd);
     SET mh = 1000 + EXP(@rnd) * (LOG(@en - 99) + 1);
 
-    INSERT INTO Creatures (owner_id, energy, fire, air, water, earth, light, darkness, spirit, speed, dexterity, charisma, max_health)
+    INSERT INTO Champions (owner_id, energy, fire, air, water, earth, light, darkness, spirit, speed, dexterity, charisma, max_health)
       VALUES (o_id, @en, p_fire, p_air, p_water, p_earth, p_light, p_darkness, p_spirit, sp, dex, cha, mh);
-      
+
 	-- Determine whether stone breaks. These probabilities should be correct.
-    
+
     CALL normal(32, @rnd);
     IF (@rnd < -2.498 AND @en = 240100) OR
 		(@rnd < -2.241 AND @en < 240100 AND @en >= 34300) OR
 		(@rnd < -1.96 AND @en < 34300 AND @en >= 4900) OR
 		(@rnd < -1.645 AND @en < 4900 AND @en >= 700) OR
-        (@rnd < -1.282 AND @en < 700) 
+        (@rnd < -1.282 AND @en < 700)
 			THEN DELETE FROM Stones WHERE id = s_id;
     END IF;
   END IF;

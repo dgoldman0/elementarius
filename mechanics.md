@@ -12,6 +12,10 @@ The same type of stone must be used. So for instance, fire stones of insight can
 
 Since a person may want to fuse stones together even though they don't have enough mana, each stone will have a unique identifier and how many common stones are fused to create it.
 
+# Puzzles
+
+If a puzzle has already been answered, the amount of mana given for answering it correctly is lower. New question banks and puzzle types can be unlocked using different items.
+
 # Crafting Items
 
 A stone of creation is needed to craft items, as a focus for the mana. A common stone can only common items. A uncommon stone can only uncommon items, and so on. You can use higher tier stones to craft lower tier items. Doing so increases the chance of success and decreases the chances of the stone shattering.
@@ -56,7 +60,7 @@ Not much is considered with creatures and how they'll battle. There will be rari
 
 ## Battling
 
-One on one battles will be the primary mode of battling. The battles are active, meaning that a user has to decide what actions to take for each turn. A player can decide from a number of actions, including attack actions and defense actions. A player can also try to run away from the battle. 
+One on one battles will be the primary mode of battling. The battles are active, meaning that a user has to decide what actions to take for each turn. A player can decide from a number of actions, including attack actions and defense actions. A player can also try to run away from the battle.
 
 ## Breeding
 
