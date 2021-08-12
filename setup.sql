@@ -10,29 +10,41 @@ DROP DATABASE elementarius_game; -- This line is just to delete old versions whi
 CREATE DATABASE elementarius_game;
 USE elementarius_game;
 
--- Need to add salted & encrypted passwords for authentication. Also will include other information such as email address, etc.
-CREATE TABLE Users (id INT NOT NULL auto_increment, username VARCHAR(60) NOT NULL, packs SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+DELIMITER $$
+
+/* User Authentication Framework
+**
+** User authentication mirrors blockchain authentication. To sign in, a person will have to sign a chellenge message with their private key (RSA).
+** This system could be used for any project really.
+*/
+CREATE TABLE Users (id INT NOT NULL auto_increment, username VARCHAR(60) NOT NULL, public_key TINYBLOB NOT NULL, PRIMARY KEY (id));
+
+CREATE PROCEDURE register_user(IN username VARCHAR(60), IN pubkey TINYBLOB)
+CREATE PROCEDURE request_challenge(IN uid INT UNSIGNED)
+  READS SQL DATA SQL SECURITY INVOKER
+  BEGIN
+
+END;$$
+
+-- Authenticate user, called after request_challenge
+CREATE PROCEDURE authenticate_user(IN response TINYBLOB)
+  READS SQL DATA SQL SECURITY INVOKER
+  BEGIN
+
+END;$$
+
+CREATE TABLE User_Stats(id INT NOT NULL, packs SMALLINT UNSIGNED NOT NULL DEFAULT 0,
   fire INT UNSIGNED NOT NULL DEFAULT 0, air INT UNSIGNED NOT NULL DEFAULT 0, water INT UNSIGNED NOT NULL DEFAULT 0, earth INT UNSIGNED NOT NULL DEFAULT 0,
   light INT UNSIGNED NOT NULL DEFAULT 0, darkness INT UNSIGNED NOT NULL DEFAULT 0, spirit INT UNSIGNED NOT NULL DEFAULT 0, PRIMARY KEY (id));
 
 -- I don't know if I want the database to store the entire battle history or not
 CREATE TABLE Battle_Stats (user_id INT NOT NULL, xp INT UNSIGNED NOT NULL DEFAULT 0, wins INT UNSIGNED NOT NULL DEFAULT 0, losses INT UNSIGNED NOT NULL DEFAULT 0, draws INT UNSIGNED NOT NULL DEFAULT 0, PRIMARY KEY (user_id));
-
+CREATE TABLE Battle_Queue (user_id INT NOT NULL, )
 CREATE TABLE Stones (id INT UNSIGNED NOT NULL auto_increment, owner_id INT UNSIGNED NOT NULL, mana_type VARCHAR(10) NOT NULL, stone_type VARCHAR(10), energy INT UNSIGNED NOT NULL, PRIMARY KEY (id));
 
--- Debating whether or not to add an actual indicator of rarity based on the stone rarity used to create the creature. Rarity could provide other benefits or just create a shiny version.
-CREATE TABLE Champions (id INT UNSIGNED NOT NULL auto_increment, owner_id INT UNSIGNED NOT NULL, energy INT UNSIGNED NOT NULL,
-  fire SMALLINT NOT NULL, air SMALLINT NOT NULL, water SMALLINT NOT NULL, earth SMALLINT NOT NULL, light SMALLINT NOT NULL, darkness SMALLINT NOT NULL, spirit SMALLINT NOT NULL,
-  speed SMALLINT NOT NULL, strength SMALLINT NOT NULL, dexterity SMALLINT NOT NULL, charisma SMALLINT NOT NULL,
-  max_health SMALLINT UNSIGNED NOT NULL, age SMALLINT UNSIGNED NOT NULL DEFAULT 0, health SMALLINT UNSIGNED NOT NULL,
-  can_breed BOOL NOT NULL DEFAULT TRUE,
-  PRIMARY KEY (id));
-
 -- Just temporary to try opening packs, etc.
-INSERT INTO Users (username, packs) VALUES ('admin', 1000);
+INSERT INTO Users (username, public_key) VALUES ('admin', "----gotta make something up----");
 INSERT INTO Battle_Stats (user_id, xp) VALUES (1, 0);
-
-DELIMITER $$
 
 CREATE PROCEDURE normal(IN iterations TINYINT, OUT result FLOAT)
 READS SQL DATA SQL SECURITY INVOKER
@@ -217,11 +229,28 @@ CREATE PROCEDURE fuse_stones(IN id_array VARCHAR(1000))
 	ELSE ROLLBACK; END IF;
 END;$$
 
+/* Debating whether or not to add an actual indicator of rarity based on the stone rarity used to create the creature. Rarity could provide other benefits or just create a shiny version.
+**
+** Right now champions are just tied to the owner, but eventually I really want them tied to Provincial titles.
+**   But such actions would require some kind of communication with the blockchain network, which cannot be done through MYSQL - unless I customize MYSQL itself!
+*/
+
+CREATE TABLE Champions (id INT UNSIGNED NOT NULL auto_increment, owner_id INT UNSIGNED NOT NULL, energy INT UNSIGNED NOT NULL,
+  fire SMALLINT NOT NULL, air SMALLINT NOT NULL, water SMALLINT NOT NULL, earth SMALLINT NOT NULL, light SMALLINT NOT NULL, darkness SMALLINT NOT NULL, spirit SMALLINT NOT NULL,
+  speed SMALLINT NOT NULL, strength SMALLINT NOT NULL, dexterity SMALLINT NOT NULL, charisma SMALLINT NOT NULL,
+  max_health SMALLINT UNSIGNED NOT NULL, age SMALLINT UNSIGNED NOT NULL DEFAULT 0, health SMALLINT UNSIGNED NOT NULL,
+  xp UNSIGNED INT NOT NULL DEFAULT 0, leveled BOOL NOT NULL DEFAULT TRUE,
+  PRIMARY KEY (id));
+
 /* Create a champion using mana stones and mana
 **
 ** Uses a combination of a mana stone and mana to craft champions. The more mana used, the better the stats. The better the mana stone used, the better the stats as well.
 **
 ** I still need to create an output variable to return results
+**
+**
+** I should adjust this system so that the min and max stats will be based on the champion's level. As the champion levels up, stats can be rerolled.
+**
 */
 CREATE PROCEDURE create_champion(IN o_id INT UNSIGNED, IN s_id INT UNSIGNED,
   m_fire INT UNSIGNED, m_air INT UNSIGNED, m_water INT UNSIGNED, m_earth INT UNSIGNED,
@@ -319,5 +348,41 @@ BEGIN
     END IF;
   END IF;
 END;$$
+
+-- Champion Leveling
+
+CREATE PROCEDURE level_champion(IN c_id UNSIGNED INT)
+READS SQL DATA SQL SECURITY INVOKER
+BEGIN
+
+END;$$
+
+/* Generates the actual battle results between two champions
+**
+** This is the initial version of the battle engine. It doesn't take into account all stats, so it's pure alpha version right now.
+**
+*/
+
+CREATE PROCEDURE champion_battle(IN first INT UNSIGNED, IN second INT UNSIGNED)
+  READS SQL DATA SQL SECURITY INVOKER
+  BEGIN
+
+-- Update to have speed rolls random
+  CALL normal(32, @rnd1);
+  CALL normal(32, @rnd2);
+  SELECT c1.speed + @rnd1 > c2.speed + @rnd2 INTO @initiative FROM users c1, users c2 WHERE c1.id = first AND c2.id = SECOND;
+
+  /* Half the difference between the two champion's XP goes to the winner and comes from the loser.
+  **
+  */
+
+END;$$
+
+/* Battle Queue
+** The battle queue is required to ensure that champions will be matched with champions of similar XP
+** Method: A user will be able to submit a new battle request to the server. The server will then check to see if there's an appropriate match.
+** Each new addition to the queue will wait for a pairing.
+** If a pairing cannot be made within a certain amount of time, an automatic event trigger will remove it.
+*/
 
 DELIMITER ;
