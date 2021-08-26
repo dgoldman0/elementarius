@@ -1,2 +1,4 @@
 
 httpdocs/inc/db_info.php
+server/sql/trivia_questions.sql
+telegram_bot/settings.js

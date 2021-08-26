@@ -10,7 +10,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col text-left">
-                        <h1 class="text-white">Open Mana Packs (x packs remaining)</h1>
+                        <h1 class="text-white"></h1>
                         <hr/>
                         <div class = "d-flex justify-content-evenly">
                           <div class="col-xs-5">
