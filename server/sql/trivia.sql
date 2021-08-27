@@ -28,6 +28,8 @@ CREATE PROCEDURE request_question(OUT question VARCHAR(256))
   SET @question_active = TRUE;
   SET question = @question;
   -- Set time limit
+  -- After time has elapsed, penalize user
+
 
   SELECT @question;
   
